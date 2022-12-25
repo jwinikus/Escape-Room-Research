@@ -27,3 +27,15 @@ CORS(app)
 def homepage():
     return render_template("index.html")
 
+# ALL CSS ROUTES
+@app.route('/<path:path>')
+def serve(path):
+     path_dir = os.path.abspath("../../frontend") #path react build
+     if path != "" and os.path.exists(os.path.join(path_dir, path)):
+         return send_from_directory(os.path.join(path_dir), path)
+     else:
+         return send_from_directory(os.path.join(path_dir),'index.html')
+
+
+if __name__ == "__main__":
+    app.run("0.0.0.0", 8080)

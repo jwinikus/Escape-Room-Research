@@ -8,7 +8,7 @@ import hashlib
 
 # Initialize the Mongo connection here
 mongoClient = MongoClient('mongo')
-db = mongoClient("Jenn's Research")
+db = mongoClient["Jenn's_Research"]
 
 # Initialize all collections here
 userAccts = db["userAccts"]
