@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+    <h2> Welcome to the lab! However, it seems that something or someone knocked over a bunch of stuff. Some of the key pieces don't look like they're set up right.</h2>
+    <ul>
+        <li> The modem is the modulator-demodulator that communicates between your building and the outside internet </li>
+        <li> A router takes the internet signal and allows it to connect with devices locally </li>
+        <li> There are lots of local devices in the lab that depend on this internet connect </li>
+    </ul>
+    <br/>
+    <p> This needs to be set up in an order... an ordered set of steps/tasks is actually known as an <b>algorithm</b></p>
+    <br/>
+
+    <form action="lab-room" id="lab-room" method="post" enctype="multipart/form-data">
+        <ul>
+            <li> Modem </li>
+            <li> Router </li>
+            <li> Printer </li>
+        </ul>
+        <p> What comes first? </p>
+        <input id="modem-1" type="radio" name="item-1" value="Modem">
+        <label for="Modem-1">Modem</label>
+        <input id="router-1" type="radio" name="item-1" value="Router">
+        <label for="Router-1">Router</label>
+        <input id="printer-1" type="radio" name="item-1" value="Printer">
+        <label for="Printer-1">Printer</label>
+        <br/>
+        <p> What comes second? </p>
+        <input id="modem-2" type="radio" name="item-2" value="Modem">
+        <label for="Modem-2">Modem</label>
+        <input id="router-2" type="radio" name="item-2" value="Router">
+        <label for="Router-2">Router</label>
+        <input id="printer-2" type="radio" name="item-2" value="Printer">
+        <label for="Printer-2">Printer</label>
+        <br/>
+        <p> What comes third? </p>
+        <input id="modem-3" type="radio" name="item-3" value="Modem">
+        <label for="Modem-3">Modem</label>
+        <input id="router-3" type="radio" name="item-3" value="Router">
+        <label for="Router-3">Router</label>
+        <input id="printer-3" type="radio" name="item-3" value="Printer">
+        <label for="Printer-3">Printer</label>
+        <input type="submit" value="Next">
+</html>

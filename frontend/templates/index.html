@@ -14,14 +14,16 @@
       <br/>
       You need to explore clues left around, potentially fix setups, and ultimately come up with the code to keep the internet working.
     </p>
-    <form>
-      <form action="/image-upload" id="image-form" method="post" enctype="multipart/form-data">
+    <div class="container">
+      <form action="/homepage" id="homepage" method="post" enctype="multipart/form-data">
         <input value={{XSRFToken}} name="xsrf_token" hidden>
-        <label for="user">Username: </label>
-        <textarea id="user" name="user" cols="12" rows="1"></textarea>
+        <p>{{ data }}</p>
+        <label for="user"><b>Username: </b></label>
+        <textarea id="user" name="user" placeholder="Enter your name here" cols="12" rows="1"></textarea>
         <br/>
-        <input type="submit" value="Post">
-     </form>
-    </form>
+        <input type="submit" value="Next">
+      </form>
+    </div>
+
   </body>
 </html>
