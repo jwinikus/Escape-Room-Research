@@ -19,7 +19,7 @@ def userCustomEncode(user):
     return {"_type": "user", 
             "username" : user.username,
             "lastQuestionSubmitted" : user.lastQuestionSubmitted,
-            "lastTime" : user.lastTime.strftime("%I:%M:%S"),
+            "lastTime" : user.lastTime.strftime("%H:%M:%S"),
             "modemQuestionCompleted" : user.modemQuestionCompleted,
             "codeQuestionCompleted" : user.codeQuestionCompleted
     }
@@ -45,7 +45,7 @@ def insert_data(data):
     new_user = {}
     new_user["username"] = data["username"]
     
-
+    print(data["lastTime"])
     new_user_object = User.User(
         data["username"],
         data["lastQuestionSubmitted"],

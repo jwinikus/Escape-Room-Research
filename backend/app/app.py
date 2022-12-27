@@ -186,7 +186,6 @@ def keypad():
 
     if request.method == "GET":
 
-        print(token)
         if not token:
             return redirect("/")
 
@@ -212,9 +211,14 @@ def keypad():
         currTime = datetime.now().time()
         timeFromLastSubmission = database.get_time(token, currTime)
 
+        print(currTime)
+        print(timeFromLastSubmission)
+
         timeDifference = datetime.combine(date.min, currTime) - datetime.combine(date.min, timeFromLastSubmission)
 
         timeDifference = timeDifference.seconds
+
+        print(timeDifference)
 
 
         if timeDifference < 45:
