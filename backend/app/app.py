@@ -63,6 +63,11 @@ def homepage():
 @app.route("/conference-room", methods=["GET", "POST"])
 def conference_room():
     if request.method == "GET":
+
+        token = request.cookies.get("token")
+        if not token:
+            return redirect("/")
+
         return render_template("conference_room.html")
     
     if request.method == "POST":
@@ -82,6 +87,11 @@ def conference_room():
 
 @app.route("/pages")
 def pages():
+
+    token = request.cookies.get("token")
+    if not token:
+        return redirect("/")
+
     return render_template("pages.html")
 
 
@@ -91,6 +101,10 @@ def lab_room():
     if request.method == "GET":
 
         token = request.cookies.get("token")
+
+        if not token:
+            return redirect("/")
+
         # Check if the user already did this question
         passedAlready = database.check_modem_question(token)
         if passedAlready:
@@ -152,6 +166,79 @@ def lab_room():
         """
         return render_template("lab.html", new_data=new_data, code=code)
         
+
+@app.route("/whiteboard", methods=["GET"])
+def whiteboard():
+
+    if request.method == "GET":
+
+        token = request.cookies.get("token")
+        if not token:
+            return redirect("/")
+
+        return render_template("whiteboard.html")
+
+
+@app.route("/keypad", methods=["GET", "POST"])
+def keypad():
+
+    token = request.cookies.get("token")
+
+    if request.method == "GET":
+
+        print(token)
+        if not token:
+            return redirect("/")
+
+        # Check if the user already did this question
+        passedAlready = database.check_code_question(token)
+        if passedAlready:
+            return render_template("keypad.html", success=True)
+
+
+        return render_template("keypad.html", success=False)
+    
+    else:
+
+        newData = request.form.to_dict()
+
+        # Check if the user already did this question
+        passedAlready = database.check_code_question(token)
+        if passedAlready:
+            return render_template("keypad.html", success=True)
+
+
+
+        currTime = datetime.now().time()
+        timeFromLastSubmission = database.get_time(token, currTime)
+
+        timeDifference = datetime.combine(date.min, currTime) - datetime.combine(date.min, timeFromLastSubmission)
+
+        timeDifference = timeDifference.seconds
+
+
+        if timeDifference < 45:
+            data = "You submitted too quickly! Please think about your answer choices"
+            return render_template("keypad.html", data=data, success=False)
+
+        # Check if their answer is right.
+        if newData["1-number-text"] != "0" or newData["2-number-text"] != "4" or newData["3-number-text"] != "2":
+            data = "One of your values is incorrect. Please try again"
+            return render_template("keypad.html", data=data, success=False)
+
+
+        database.set_code_true(token)
+        return render_template("keypad.html", success=True)
+    
+
+@app.route("/delete")
+def delete():
+
+    token = request.cookies.get("token")
+    database.delete_user(token)
+    resp = make_response(redirect("https://archive.org/details/msdos_Oregon_Trail_The_1990"))
+    resp.set_cookie("token", "", expires=0)
+    return resp
 
 
 # ALL CSS ROUTES

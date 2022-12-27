@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+    <h2> This is the internet's last chance! Please enter the code number by number below to save the internet! </h2>
+    {{ data  }}
+    {% if success == false %}
+    <form action="keypad" id="keypad" method="post" enctype="multipart/form-data">
+        <label for="1-number">What is the first number? </label>
+        <textarea id="1-number" name="1-number-text" placeholder="Enter your the 1st number here" cols="6" rows="1"></textarea>
+        <br/>
+        <label for="2-number">What is the second number? </label>
+        <textarea id="2-number" name="2-number-text" placeholder="Enter your the 2nd number here" cols="6" rows="1"></textarea>
+        <br/>
+        <label for="3-number">What is the third number? </label>
+        <textarea id="3-number" name="3-number-text" placeholder="Enter your the 3rd number here" cols="6" rows="1"></textarea>
+        <br/>
+        <input type="submit" value="Submit">
+    </form>
+    {% else %}
+    <h2> Congratulations! 042 (or better known as 42) is the ultimate answer to life, the universe and everything! .. please read the "Hitchhiker's Guide to the Galaxy" to learn more! </h2>
+    <h2> The internet is saved! Sort of... it thinks we're in the year 1990...</h2>
+    <p> Follow this link and launch the emulator (an environment that pretends to be a different one to let you do things that you wouldn't normally be able to with your system). Then work with your group to see if you can make it to Oregon alive! </p>
+    <a href="https://archive.org/details/msdos_Oregon_Trail_The_1990">
+        <a href="/delete">
+            <input type="button" value="Click here for the link!"/>
+        </a>
+    </a>
+    {% endif %}
+</html>

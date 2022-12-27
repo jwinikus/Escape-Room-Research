@@ -81,6 +81,14 @@ def get_time(token, currTime):
     return timeFromLast
 
 
+def delete_user(token):
+
+    new_token = hashlib.sha256(token.encode()).digest()
+    userAccts.delete_one({"token" : new_token })
+
+
+# Get and Set Lab Question Functions
+
 def set_modem_true(token):
 
     new_token = hashlib.sha256(token.encode()).digest()
@@ -102,6 +110,35 @@ def check_modem_question(token):
     user = userCustomDecode(user["user"])
 
     if user.modemQuestionCompleted:
+        return True
+    else:
+        return False
+
+
+
+# Get and Set Code Question Functions
+
+def set_code_true(token):
+
+    new_token = hashlib.sha256(token.encode()).digest()
+
+    user = userAccts.find_one({"token" : new_token})
+    user = userCustomDecode(user["user"])
+    user.codeQuestionCompleted = True
+
+    userAccts.update_one({"token" : new_token}, {"$set" : {"user" : userCustomEncode(user)}})
+
+    return
+
+
+def check_code_question(token):
+
+    new_token = hashlib.sha256(token.encode()).digest()
+
+    user = userAccts.find_one({"token" : new_token})
+    user = userCustomDecode(user["user"])
+
+    if user.codeQuestionCompleted:
         return True
     else:
         return False
