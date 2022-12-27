@@ -4,7 +4,7 @@ import os
 import sys
 import bcrypt
 import hashlib
-from datetime import datetime
+import datetime
 
 # Initialize the Mongo connection here
 mongoClient = MongoClient('mongo')
@@ -19,7 +19,9 @@ def userCustomEncode(user):
     return {"_type": "user", 
             "username" : user.username,
             "lastQuestionSubmitted" : user.lastQuestionSubmitted,
-            "lastTime" : user.lastTime.strftime("%I:%M:%S")
+            "lastTime" : user.lastTime.strftime("%I:%M:%S"),
+            "modemQuestionCompleted" : user.modemQuestionCompleted,
+            "codeQuestionCompleted" : user.codeQuestionCompleted
     }
 
 def userCustomDecode(document):
@@ -27,7 +29,9 @@ def userCustomDecode(document):
     time = document["lastTime"].split(":")
     return User.User(document["username"],
                     document["lastQuestionSubmitted"],
-                    datetime.time(time[0], time[1], time[2])
+                    datetime.time(int(time[0]), int(time[1]), int(time[2])),
+                    document["modemQuestionCompleted"],
+                    document["codeQuestionCompleted"]
     )
     
     
@@ -45,7 +49,9 @@ def insert_data(data):
     new_user_object = User.User(
         data["username"],
         data["lastQuestionSubmitted"],
-        data["lastTime"]
+        data["lastTime"],
+        False,
+        False
     )
 
     new_user["user"] = userCustomEncode(new_user_object)
@@ -54,3 +60,48 @@ def insert_data(data):
     
     userAccts.insert_one(new_user)
     return 0
+
+
+def get_time(token, currTime):
+    ''' Gets the time from the last submission of the current user. '''
+
+    new_token = hashlib.sha256(token.encode()).digest()
+    user = userAccts.find_one({"token" : new_token}, {"_id" : 0})
+
+    if user == None:
+        return -1
+
+    user = userCustomDecode(user["user"])
+
+    timeFromLast = user.lastTime
+    user.lastTime = currTime
+
+    userAccts.update_one({"token" : new_token}, {"$set" : {"user" : userCustomEncode(user)}})
+
+    return timeFromLast
+
+
+def set_modem_true(token):
+
+    new_token = hashlib.sha256(token.encode()).digest()
+
+    user = userAccts.find_one({"token" : new_token})
+    user = userCustomDecode(user["user"])
+    user.modemQuestionCompleted = True
+
+    userAccts.update_one({"token" : new_token}, {"$set" : {"user" : userCustomEncode(user)}})
+
+    return
+
+
+def check_modem_question(token):
+
+    new_token = hashlib.sha256(token.encode()).digest()
+
+    user = userAccts.find_one({"token" : new_token})
+    user = userCustomDecode(user["user"])
+
+    if user.modemQuestionCompleted:
+        return True
+    else:
+        return False

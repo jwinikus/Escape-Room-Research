@@ -9,6 +9,7 @@
     <p> This needs to be set up in an order... an ordered set of steps/tasks is actually known as an <b>algorithm</b></p>
     <br/>
 
+    <p>{{ data }}</p>
     <form action="lab-room" id="lab-room" method="post" enctype="multipart/form-data">
         <ul>
             <li> Modem </li>
@@ -39,4 +40,11 @@
         <input id="printer-3" type="radio" name="item-3" value="Printer">
         <label for="Printer-3">Printer</label>
         <input type="submit" value="Next">
+    </form>
+
+    <p> {{ new_data }} </p>
+    <p><b> {{ code }} </b></p>
+    <a href="/conference-room">
+        <input type="button" value="Go back to conference room."/>
+    </a>
 </html>
